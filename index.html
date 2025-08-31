@@ -5,92 +5,122 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FOI - FBI RP</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-  body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #0b0c10, #1f2833);
-    color: #c5c6c7;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    padding: 30px;
-  }
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #0b0c10, #1f2833);
+  color: #c5c6c7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 30px;
+}
 
-  h1 {
-    color: #66fcf1;
-    font-size: 3em;
-    text-shadow: 0 0 10px #45a29e;
-    margin-bottom: 30px;
-  }
+h1 {
+  color: #66fcf1;
+  font-size: 3em;
+  text-shadow: 0 0 10px #45a29e;
+  margin-bottom: 30px;
+}
 
-  form {
-    background: #1f2833;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #45a29e;
-    margin-bottom: 30px;
-    width: 320px;
-    transition: transform 0.3s;
-  }
+form {
+  background: #1f2833;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #45a29e;
+  margin-bottom: 30px;
+  width: 350px;
+  transition: transform 0.3s;
+}
 
-  form:hover {
-    transform: scale(1.02);
-  }
+form:hover {
+  transform: scale(1.02);
+}
 
-  input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    font-size: 1em;
-  }
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 1em;
+}
 
-  input[type="submit"] {
-    background: #45a29e;
-    color: #0b0c10;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+input[type="submit"] {
+  background: #45a29e;
+  color: #0b0c10;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-  input[type="submit"]:hover {
-    background: #66fcf1;
-  }
+input[type="submit"]:hover {
+  background: #66fcf1;
+}
 
-  #search {
-    width: 320px;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    box-shadow: 0 0 10px #45a29e;
-  }
+#search {
+  width: 350px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  box-shadow: 0 0 10px #45a29e;
+}
 
-  ul {
-    list-style: none;
-    padding: 0;
-    width: 320px;
-  }
+ul {
+  list-style: none;
+  padding: 0;
+  width: 350px;
+}
 
-  li {
-    background: #1f2833;
-    margin-bottom: 10px;
-    padding: 12px;
-    border-radius: 12px;
-    box-shadow: 0 0 12px #45a29e;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1f2833;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #45a29e;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
-  li:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px #66fcf1;
-  }
+li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px #66fcf1;
+}
+
+.detenu-info {
+  display: flex;
+  align-items: center;
+}
+
+.detenu-info img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+  border: 2px solid #66fcf1;
+}
+
+button.supprimer {
+  background: #ff4d4d;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: #fff;
+}
+
+button.supprimer:hover {
+  background: #ff1a1a;
+}
 </style>
 </head>
 <body>
@@ -103,6 +133,7 @@
   <input type="number" placeholder="Âge" required id="age">
   <input type="text" placeholder="Crime" required id="crime">
   <textarea placeholder="Autres infos" id="autres"></textarea>
+  <input type="text" placeholder="URL de la photo" id="photo">
   <input type="submit" value="Ajouter">
 </form>
 
@@ -111,48 +142,84 @@
 <ul id="liste"></ul>
 
 <script>
-  let personnes = [];
+let personnes = [];
 
-  const form = document.getElementById('fbiForm');
-  const liste = document.getElementById('liste');
-  const search = document.getElementById('search');
+// Charger les données depuis localStorage
+if(localStorage.getItem('personnes')) {
+  personnes = JSON.parse(localStorage.getItem('personnes'));
+  displayList(personnes);
+}
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const personne = {
-      nom: document.getElementById('nom').value.trim(),
-      prenom: document.getElementById('prenom').value.trim(),
-      age: document.getElementById('age').value,
-      crime: document.getElementById('crime').value.trim(),
-      autres: document.getElementById('autres').value.trim()
-    };
+const form = document.getElementById('fbiForm');
+const liste = document.getElementById('liste');
+const search = document.getElementById('search');
 
-    personnes.push(personne);
-    personnes.sort((a, b) => a.nom.localeCompare(b.nom));
-    displayList(personnes);
-    form.reset();
-  });
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
 
-  function displayList(list) {
-    liste.innerHTML = '';
-    list.forEach(p => {
-      const li = document.createElement('li');
-      li.textContent = `${p.nom} ${p.prenom} - ${p.age} ans - Crime: ${p.crime}${p.autres ? ' - ' + p.autres : ''}`;
-      liste.appendChild(li);
+  const personne = {
+    nom: document.getElementById('nom').value.trim(),
+    prenom: document.getElementById('prenom').value.trim(),
+    age: document.getElementById('age').value,
+    crime: document.getElementById('crime').value.trim(),
+    autres: document.getElementById('autres').value.trim(),
+    photo: document.getElementById('photo').value.trim() || 'https://via.placeholder.com/50'
+  };
+
+  personnes.push(personne);
+  personnes.sort((a,b) => a.nom.localeCompare(b.nom));
+  saveAndDisplay();
+  form.reset();
+});
+
+function displayList(list) {
+  liste.innerHTML = '';
+  list.forEach((p, index) => {
+    const li = document.createElement('li');
+
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'detenu-info';
+
+    const img = document.createElement('img');
+    img.src = p.photo;
+
+    const text = document.createElement('span');
+    text.textContent = `${p.nom} ${p.prenom} - ${p.age} ans - Crime: ${p.crime}${p.autres ? ' - ' + p.autres : ''}`;
+
+    infoDiv.appendChild(img);
+    infoDiv.appendChild(text);
+    li.appendChild(infoDiv);
+
+    const btn = document.createElement('button');
+    btn.textContent = 'Supprimer';
+    btn.className = 'supprimer';
+    btn.addEventListener('click', () => {
+      personnes.splice(index, 1);
+      saveAndDisplay();
     });
-  }
 
-  search.addEventListener('input', function() {
-    const value = search.value.toLowerCase();
-    const filtered = personnes.filter(p => 
-      p.nom.toLowerCase().includes(value) || 
-      p.prenom.toLowerCase().includes(value) ||
-      p.crime.toLowerCase().includes(value)
-    );
-    displayList(filtered);
+    li.appendChild(btn);
+    liste.appendChild(li);
   });
+}
+
+search.addEventListener('input', function() {
+  const value = search.value.toLowerCase();
+  const filtered = personnes.filter(p => 
+    p.nom.toLowerCase().includes(value) || 
+    p.prenom.toLowerCase().includes(value) ||
+    p.crime.toLowerCase().includes(value)
+  );
+  displayList(filtered);
+});
+
+// Sauvegarder dans localStorage et afficher
+function saveAndDisplay() {
+  localStorage.setItem('personnes', JSON.stringify(personnes));
+  displayList(personnes);
+}
 </script>
 
 </body>
 </html>
+
