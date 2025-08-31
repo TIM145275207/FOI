@@ -26,15 +26,44 @@ body {
 h1 {
   text-align: center;
   color: #1f2937;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
+/* Onglets */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  background: #e5e7eb;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+.tab-button.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.tab-button:hover {
+  background: #60a5fa;
+  color: white;
+}
+
+/* Formulaires et listes */
 form {
   background: #fff;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 form input, form textarea {
@@ -59,10 +88,10 @@ form input[type="submit"]:hover {
   background: #2563eb;
 }
 
-#search {
+#search, #searchPlaques {
   width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1em;
@@ -78,8 +107,8 @@ li {
   align-items: center;
   justify-content: space-between;
   background: #fff;
-  margin-bottom: 15px;
-  padding: 15px;
+  margin-bottom: 12px;
+  padding: 12px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -159,6 +188,14 @@ button.supprimer:hover {
   font-size:22px;
   color:#ef4444;
 }
+
+/* Contenus onglets */
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
 </style>
 </head>
 <body>
@@ -166,6 +203,14 @@ button.supprimer:hover {
 <div class="container">
 <h1>FOI - FBI RP</h1>
 
+<!-- Onglets -->
+<div class="tabs">
+  <button class="tab-button active" data-tab="detenus">Détenus</button>
+  <button class="tab-button" data-tab="plaques">Plaques</button>
+</div>
+
+<!-- Détenus -->
+<div id="detenus" class="tab-content active">
 <form id="fbiForm">
   <input type="text" placeholder="Nom" required id="nom">
   <input type="text" placeholder="Prénom" required id="prenom">
@@ -175,10 +220,19 @@ button.supprimer:hover {
   <input type="text" placeholder="URL de la photo" id="photo">
   <input type="submit" value="Ajouter">
 </form>
-
 <input type="text" id="search" placeholder="Rechercher...">
-
 <ul id="liste"></ul>
+</div>
+
+<!-- Plaques -->
+<div id="plaques" class="tab-content">
+<form id="plaqueForm">
+  <input type="text" placeholder="Numéro de plaque" required id="numero">
+  <input type="text" placeholder="Propriétaire" required id="proprietaire">
+  <input type="submit" value="Ajouter">
+</form>
+<input type="text" id="searchPlaques" placeholder="Rechercher...">
+<ul id="listePlaques"></ul>
 </div>
 
 <!-- Modale -->
@@ -194,8 +248,22 @@ button.supprimer:hover {
 </div>
 
 <script>
-let personnes = [];
+const avatarParDefaut = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png';
 
+// Onglets
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+tabButtons.forEach(button=>{
+  button.addEventListener('click', ()=>{
+    tabButtons.forEach(b=>b.classList.remove('active'));
+    tabContents.forEach(c=>c.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById(button.dataset.tab).classList.add('active');
+  });
+});
+
+// Détenus
+let personnes = [];
 const liste = document.getElementById('liste');
 const search = document.getElementById('search');
 const modal = document.getElementById('modal');
@@ -207,17 +275,12 @@ const modalAutres = document.getElementById('modal-autres');
 const closeBtn = document.getElementById('close');
 const form = document.getElementById('fbiForm');
 
-// Avatar par défaut
-const avatarParDefaut = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png';
-
-// Charger depuis localStorage
-if(localStorage.getItem('personnes')) {
+if(localStorage.getItem('personnes')){
   personnes = JSON.parse(localStorage.getItem('personnes'));
   displayList(personnes);
 }
 
-// Ajouter détenu
-form.addEventListener('submit', e => {
+form.addEventListener('submit', e=>{
   e.preventDefault();
   const personne = {
     nom: document.getElementById('nom').value.trim(),
@@ -233,44 +296,36 @@ form.addEventListener('submit', e => {
   form.reset();
 });
 
-// Afficher liste
-function displayList(list) {
-  liste.innerHTML = '';
+function displayList(list){
+  liste.innerHTML='';
   list.forEach((p,index)=>{
-    const li = document.createElement('li');
-
-    const infoDiv = document.createElement('div');
+    const li=document.createElement('li');
+    const infoDiv=document.createElement('div');
     infoDiv.className='detenu-info';
-
-    const img = document.createElement('img');
+    const img=document.createElement('img');
     img.src=p.photo || avatarParDefaut;
     img.addEventListener('click',()=>openModal(p));
-
-    const text = document.createElement('span');
+    const text=document.createElement('span');
     text.textContent=`${p.nom} ${p.prenom} - ${p.age} ans - Crime: ${p.crime}${p.autres?' - '+p.autres:''}`;
     text.addEventListener('click',()=>openModal(p));
-
     infoDiv.appendChild(img);
     infoDiv.appendChild(text);
     li.appendChild(infoDiv);
-
-    const btn = document.createElement('button');
+    const btn=document.createElement('button');
     btn.textContent='Supprimer';
     btn.className='supprimer';
     btn.addEventListener('click',()=>{
       personnes.splice(index,1);
       saveAndDisplay();
     });
-
     li.appendChild(btn);
     liste.appendChild(li);
   });
 }
 
-// Recherche
-search.addEventListener('input',()=>{
-  const value = search.value.toLowerCase();
-  const filtered = personnes.filter(p=>
+search.addEventListener('input', ()=>{
+  const value=search.value.toLowerCase();
+  const filtered=personnes.filter(p=>
     p.nom.toLowerCase().includes(value)||
     p.prenom.toLowerCase().includes(value)||
     p.crime.toLowerCase().includes(value)
@@ -278,7 +333,6 @@ search.addEventListener('input',()=>{
   displayList(filtered);
 });
 
-// Sauvegarder et afficher
 function saveAndDisplay(){
   localStorage.setItem('personnes',JSON.stringify(personnes));
   displayList(personnes);
@@ -294,12 +348,66 @@ function openModal(personne){
   modal.style.display='flex';
 }
 
-closeBtn.addEventListener('click',()=>modal.style.display='none');
+closeBtn.addEventListener('click', ()=>modal.style.display='none');
 window.addEventListener('click', e=>{if(e.target===modal) modal.style.display='none';});
-</script>
 
+// Plaques
+let plaques = [];
+const listePlaques = document.getElementById('listePlaques');
+const searchPlaques = document.getElementById('searchPlaques');
+const plaqueForm = document.getElementById('plaqueForm');
+
+if(localStorage.getItem('plaques')){
+  plaques = JSON.parse(localStorage.getItem('plaques'));
+  displayPlaques(plaques);
+}
+
+plaqueForm.addEventListener('submit', e=>{
+  e.preventDefault();
+  const plaque = {
+    numero: document.getElementById('numero').value.trim(),
+    proprietaire: document.getElementById('proprietaire').value.trim()
+  };
+  plaques.push(plaque);
+  plaques.sort((a,b)=>a.numero.localeCompare(b.numero));
+  saveAndDisplayPlaques();
+  plaqueForm.reset();
+});
+
+function displayPlaques(list){
+  listePlaques.innerHTML='';
+  list.forEach((p,index)=>{
+    const li=document.createElement('li');
+    li.textContent=`${p.numero} - ${p.proprietaire}`;
+    const btn=document.createElement('button');
+    btn.textContent='Supprimer';
+    btn.className='supprimer';
+    btn.addEventListener('click', ()=>{
+      plaques.splice(index,1);
+      saveAndDisplayPlaques();
+    });
+    li.appendChild(btn);
+    listePlaques.appendChild(li);
+  });
+}
+
+searchPlaques.addEventListener('input', ()=>{
+  const value=searchPlaques.value.toLowerCase();
+  const filtered=plaques.filter(p=>
+    p.numero.toLowerCase().includes(value)||
+    p.proprietaire.toLowerCase().includes(value)
+  );
+  displayPlaques(filtered);
+});
+
+function saveAndDisplayPlaques(){
+  localStorage.setItem('plaques',JSON.stringify(plaques));
+  displayPlaques(plaques);
+}
+</script>
 </body>
 </html>
+
 
 
 
