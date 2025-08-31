@@ -4,232 +4,68 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FOI - FBI RP</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* === Styles généraux === */
 body {
   font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   background: url('SZCCG1i-Photoroom.png') no-repeat center center fixed;
   background-size: cover;
   color: #fff;
 }
-
 .container {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 900px; margin: 0 auto;
   padding: 30px;
   background: rgba(15,15,15,0.85);
   border-radius: 15px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.6);
 }
-
+/* Header */
 header {
-  position: sticky;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: sticky; top: 0;
+  display: flex; align-items: center; justify-content: center;
   background: rgba(0,0,0,0.7);
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  z-index: 10;
+  padding: 15px; border-radius: 10px; margin-bottom: 20px;
 }
-
-header img {
-  height: 60px;
-  margin-right: 15px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 2px solid #3b82f6;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 2em;
-  color: #3b82f6;
-  text-shadow: 0 0 10px #000;
-}
-
+header img { height: 60px; margin-right: 15px; border-radius: 8px; border: 2px solid #3b82f6; cursor:pointer; }
+header h1 { margin:0; font-size:2em; color:#3b82f6; text-shadow:0 0 10px #000; }
 /* Onglets */
-.tabs {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.tab-button {
-  background: rgba(255,255,255,0.1);
-  border: none;
-  padding: 10px 25px;
-  margin: 0 5px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  color: #fff;
-  transition: all 0.3s;
-}
-
-.tab-button.active {
-  background: #3b82f6;
-  color: #fff;
-}
-
-.tab-button:hover {
-  background: #60a5fa;
-}
-
+.tabs { display:flex; justify-content:center; margin-bottom:20px; }
+.tab-button { background: rgba(255,255,255,0.1); border:none; padding:10px 25px; margin:0 5px; border-radius:10px; cursor:pointer; font-weight:bold; color:#fff; transition:0.3s; }
+.tab-button.active { background:#3b82f6; color:#fff; }
+.tab-button:hover { background:#60a5fa; }
 /* Formulaires */
-form {
-  background: rgba(0,0,0,0.6);
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-}
-
-form input, form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  font-size: 1em;
-}
-
-form input[type="submit"] {
-  background: #3b82f6;
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-form input[type="submit"]:hover {
-  background: #2563eb;
-}
-
+form { background: rgba(0,0,0,0.6); padding:20px; border-radius:15px; margin-bottom:20px; }
+form input, form textarea { width:100%; padding:10px; margin-bottom:12px; border-radius:8px; border:none; outline:none; font-size:1em; }
+form input[type="submit"] { background:#3b82f6; color:#fff; font-weight:bold; cursor:pointer; transition:0.3s; }
+form input[type="submit"]:hover { background:#2563eb; }
 /* Recherche */
-#search, #searchPlaques {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  font-size: 1em;
-}
-
+#search, #searchPlaques { width:100%; padding:10px; margin-bottom:15px; border-radius:8px; border:none; outline:none; font-size:1em; }
 /* Listes */
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(255,255,255,0.05);
-  margin-bottom: 12px;
-  padding: 12px;
-  border-radius: 12px;
-  transition: all 0.2s;
-}
-
-li:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px #3b82f6;
-}
-
-.detenu-info {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.detenu-info img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin-right: 15px;
-  object-fit: cover;
-  border: 2px solid #3b82f6;
-}
-
-button.supprimer {
-  background: #ef4444;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-  color: #fff;
-  transition: 0.2s;
-}
-
-button.supprimer:hover {
-  background: #dc2626;
-}
-
+ul { list-style:none; padding:0; }
+li { display:flex; align-items:center; justify-content:space-between; background: rgba(255,255,255,0.05); margin-bottom:12px; padding:12px; border-radius:12px; transition:all 0.2s; }
+li:hover { transform: translateY(-2px); box-shadow:0 0 15px #3b82f6; }
+.detenu-info { display:flex; align-items:center; cursor:pointer; }
+.detenu-info img { width:60px; height:60px; border-radius:50%; margin-right:15px; object-fit:cover; border:2px solid #3b82f6; }
+button.supprimer { background:#ef4444; border:none; border-radius:6px; padding:6px 12px; cursor:pointer; color:#fff; transition:0.2s; }
+button.supprimer:hover { background:#dc2626; }
 /* Modale */
-#modal {
-  display: none;
-  position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background: rgba(0,0,0,0.8);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-#modal-content {
-  background:#111;
-  padding:25px;
-  border-radius:15px;
-  width:320px;
-  text-align:center;
-  position:relative;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {opacity:0; transform: translateY(-20px);}
-  to {opacity:1; transform: translateY(0);}
-}
-
-#modal-content img {
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  margin-bottom:10px;
-  object-fit: cover;
-  border:3px solid #3b82f6;
-}
-
-#close {
-  position:absolute;
-  top:10px; right:15px;
-  cursor:pointer;
-  font-size:22px;
-  color:#ef4444;
-}
-
+#modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000; }
+#modal-content { background:#111; padding:25px; border-radius:15px; width:320px; text-align:center; position:relative; animation:fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
+#modal-content img { width:120px; height:120px; border-radius:50%; margin-bottom:10px; object-fit:cover; border:3px solid #3b82f6; }
+#close { position:absolute; top:10px; right:15px; cursor:pointer; font-size:22px; color:#ef4444; }
 /* Contenus onglets */
-.tab-content {
-  display: none;
-}
-.tab-content.active {
-  display: block;
-}
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+
+/* === Snake Overlay === */
+#snake-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center; z-index:2000; flex-direction:column; }
+#snake-overlay canvas { border:3px solid #45a29e; border-radius:10px; background:#1f2833; }
+#close-snake { position:absolute; top:20px; right:30px; font-size:30px; color:#ef4444; cursor:pointer; }
 </style>
 </head>
 <body>
-
 <div class="container">
 <header>
   <img src="SZCCG1i-Photoroom.png" alt="Logo FBI">
@@ -265,6 +101,7 @@ button.supprimer:hover {
 <ul id="listePlaques"></ul>
 </div>
 
+<!-- Modale détenu -->
 <div id="modal">
   <div id="modal-content">
     <span id="close">&times;</span>
@@ -276,12 +113,17 @@ button.supprimer:hover {
   </div>
 </div>
 
+<!-- Snake Overlay Easter Egg -->
+<div id="snake-overlay">
+  <span id="close-snake">&times;</span>
+  <canvas id="snake-game" width="400" height="400"></canvas>
+</div>
+
 <script>
-// Détenus et plaques
+// === Détenus et plaques ===
 const avatarParDefaut = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png';
 let personnes = JSON.parse(localStorage.getItem('personnes')||'[]');
 let plaques = JSON.parse(localStorage.getItem('plaques')||'[]');
-
 const liste = document.getElementById('liste');
 const listePlaques = document.getElementById('listePlaques');
 const search = document.getElementById('search');
@@ -322,7 +164,7 @@ function displayList(list){
   });
 }
 
-// Fonctions Modale
+// Modale
 function openModal(p){modalImg.src=p.photo||avatarParDefaut; modalNom.textContent=`${p.nom} ${p.prenom}`; modalAge.textContent=`Âge : ${p.age} ans`; modalCrime.textContent=`Crime : ${p.crime}`; modalAutres.textContent=p.autres?`Infos : ${p.autres}`:''; modal.style.display='flex';}
 closeBtn.addEventListener('click',()=>modal.style.display='none'); window.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
 displayList(personnes);
@@ -353,14 +195,61 @@ plaqueForm.addEventListener('submit',e=>{e.preventDefault();const p={numero:docu
 
 // Recherche plaques
 searchPlaques.addEventListener('input',()=>{const value=searchPlaques.value.toLowerCase();displayPlaques(plaques.filter(p=>p.numero.toLowerCase().includes(value)||p.proprietaire.toLowerCase().includes(value)));});
-</script>
 
+// === Snake Easter Egg ===
+const logo = document.querySelector('header img');
+const snakeOverlay = document.getElementById('snake-overlay');
+const closeSnake = document.getElementById('close-snake');
+const canvasSnake = document.getElementById('snake-game');
+const ctxSnake = canvasSnake.getContext('2d');
+
+let clickCount = 0;
+let snake = [{x:200,y:200}], dx=20, dy=0, food={x:0,y:0}, score=0, gameInterval;
+
+logo.addEventListener('click', ()=>{
+  clickCount++;
+  if(clickCount>=5){
+    snakeOverlay.style.display='flex';
+    clickCount=0;
+    startSnake();
+  }
+});
+
+closeSnake.addEventListener('click', ()=>{
+  snakeOverlay.style.display='none';
+  clearInterval(gameInterval);
+});
+
+function placeFood(){ food.x=Math.floor(Math.random()*(canvasSnake.width/20))*20; food.y=Math.floor(Math.random()*(canvasSnake.height/20))*20; }
+
+function drawSnake(){
+  ctxSnake.fillStyle='#1f2833'; ctxSnake.fillRect(0,0,canvasSnake.width,canvasSnake.height);
+  ctxSnake.fillStyle='#66fcf1'; ctxSnake.fillRect(food.x,food.y,20,20);
+  snake.forEach((seg,i)=>{ctxSnake.fillStyle=i===0?'#3b82f6':'#45a29e'; ctxSnake.fillRect(seg.x,seg.y,18,18);});
+}
+
+function updateSnake(){
+  const head={x:snake[0].x+dx,y:snake[0].y+dy};
+  if(head.x<0||head.x>=canvasSnake.width||head.y<0||head.y>=canvasSnake.height||snake.some(seg=>seg.x===head.x && seg.y===head.y)){
+    alert("Game Over! Score: "+score);
+    snake=[{x:200,y:200}]; dx=20; dy=0; score=0; placeFood(); return;
+  }
+  snake.unshift(head);
+  if(head.x===food.x && head.y===food.y){ score++; placeFood(); } else { snake.pop(); }
+  drawSnake();
+}
+
+function startSnake(){ snake=[{x:200,y:200}]; dx=20; dy=0; score=0; placeFood(); gameInterval=setInterval(updateSnake,100); }
+
+document.addEventListener('keydown', (e)=>{
+  switch(e.key){
+    case 'ArrowUp': if(dy===0){dx=0; dy=-20;} break;
+    case 'ArrowDown': if(dy===0){dx=0; dy=20;} break;
+    case 'ArrowLeft': if(dx===0){dx=-20; dy=0;} break;
+    case 'ArrowRight': if(dx===0){dx=20; dy=0;} break;
+  }
+});
+</script>
+</div>
 </body>
 </html>
-
-
-
-
-
-
-
