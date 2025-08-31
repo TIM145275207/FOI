@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOI - FBI RP</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0b0c10;
+    color: #c5c6c7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  h1 {
+    color: #66fcf1;
+    margin-bottom: 20px;
+  }
+
+  form {
+    background: #1f2833;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #45a29e;
+    margin-bottom: 30px;
+    width: 300px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+  }
+
+  input[type="submit"] {
+    background: #45a29e;
+    color: #0b0c10;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  input[type="submit"]:hover {
+    background: #66fcf1;
+  }
+
+  #search {
+    width: 300px;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    width: 300px;
+  }
+
+  li {
+    background: #1f2833;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #45a29e;
+  }
+</style>
+</head>
+<body>
+
+<h1>FOI - FBI RP</h1>
+
+<form id="fbiForm">
+  <input type="text" placeholder="Nom" required id="nom">
+  <input type="text" placeholder="Prénom" required id="prenom">
+  <input type="number" placeholder="Âge" required id="age">
+  <input type="text" placeholder="Crime" required id="crime">
+  <textarea placeholder="Autres infos" id="autres"></textarea>
+  <input type="submit" value="Ajouter">
+</form>
+
+<input type="text" id="search" placeholder="Rechercher...">
+
+<ul id="liste"></ul>
+
+<script>
+  let personnes = [];
+
+  const form = document.getElementById('fbiForm');
+  const liste = document.getElementById('liste');
+  const search = document.getElementById('search');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const personne = {
+      nom: document.getElementById('nom').value.trim(),
+      prenom: document.getElementById('prenom').value.trim(),
+      age: document.getElementById('age').value,
+      crime: document.getElementById('crime').value.trim(),
+      autres: document.getElementById('autres').value.trim()
+    };
+
+    personnes.push(personne);
+    personnes.sort((a, b) => a.nom.localeCompare(b.nom)); // tri alpha
+    displayList(personnes);
+    form.reset();
+  });
+
+  function displayList(list) {
+    liste.innerHTML = '';
+    list.forEach(p => {
+      const li = document.createElement('li');
+      li.textContent = `${p.nom} ${p.prenom} - ${p.age} ans - Crime: ${p.crime}${p.autres ? ' - ' + p.autres : ''}`;
+      liste.appendChild(li);
+    });
+  }
+
+  search.addEventListener('input', function() {
+    const value = search.value.toLowerCase();
+    const filtered = personnes.filter(p => 
+      p.nom.toLowerCase().includes(value) || 
+      p.prenom.toLowerCase().includes(value) ||
+      p.crime.toLowerCase().includes(value)
+    );
+    displayList(filtered);
+  });
+</script>
+
+</body>
+</html>
