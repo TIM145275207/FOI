@@ -207,6 +207,9 @@ const modalAutres = document.getElementById('modal-autres');
 const closeBtn = document.getElementById('close');
 const form = document.getElementById('fbiForm');
 
+// Avatar par défaut
+const avatarParDefaut = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png';
+
 // Charger depuis localStorage
 if(localStorage.getItem('personnes')) {
   personnes = JSON.parse(localStorage.getItem('personnes'));
@@ -222,7 +225,7 @@ form.addEventListener('submit', e => {
     age: document.getElementById('age').value,
     crime: document.getElementById('crime').value.trim(),
     autres: document.getElementById('autres').value.trim(),
-    photo: document.getElementById('photo').value.trim() || 'https://via.placeholder.com/60'
+    photo: document.getElementById('photo').value.trim() || avatarParDefaut
   };
   personnes.push(personne);
   personnes.sort((a,b)=>a.nom.localeCompare(b.nom));
@@ -240,7 +243,7 @@ function displayList(list) {
     infoDiv.className='detenu-info';
 
     const img = document.createElement('img');
-    img.src=p.photo;
+    img.src=p.photo || avatarParDefaut;
     img.addEventListener('click',()=>openModal(p));
 
     const text = document.createElement('span');
@@ -283,7 +286,7 @@ function saveAndDisplay(){
 
 // Modale
 function openModal(personne){
-  modalImg.src=personne.photo;
+  modalImg.src=personne.photo || avatarParDefaut;
   modalNom.textContent=`${personne.nom} ${personne.prenom}`;
   modalAge.textContent=`Âge : ${personne.age} ans`;
   modalCrime.textContent=`Crime : ${personne.crime}`;
