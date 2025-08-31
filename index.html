@@ -364,10 +364,19 @@ if(localStorage.getItem('plaques')){
 
 plaqueForm.addEventListener('submit', e=>{
   e.preventDefault();
-  const plaque = {
-    numero: document.getElementById('numero').value.trim(),
-    proprietaire: document.getElementById('proprietaire').value.trim()
-  };
+  const numero = document.getElementById('numero').value.trim();
+  const proprietaire = document.getElementById('proprietaire').value.trim();
+
+  const plaque = { numero, proprietaire };
+
+  // Vérifier si le propriétaire est déjà un détenu
+  const detenu = personnes.find(p =>
+    (p.nom + ' ' + p.prenom).toLowerCase() === proprietaire.toLowerCase()
+  );
+  if(detenu){
+    plaque.detenuAssocie = detenu;
+  }
+
   plaques.push(plaque);
   plaques.sort((a,b)=>a.numero.localeCompare(b.numero));
   saveAndDisplayPlaques();
@@ -377,8 +386,25 @@ plaqueForm.addEventListener('submit', e=>{
 function displayPlaques(list){
   listePlaques.innerHTML='';
   list.forEach((p,index)=>{
-    const li=document.createElement('li');
-    li.textContent=`${p.numero} - ${p.proprietaire}`;
+    const li = document.createElement('li');
+    li.textContent = `${p.numero} - ${p.proprietaire}`;
+    
+    if(p.detenuAssocie){
+      const span = document.createElement('span');
+      span.textContent = ' (Détenu enregistré)';
+      span.style.color = '#3b82f6';
+      span.style.cursor = 'pointer';
+      span.addEventListener('click', ()=>{
+        // passer à l'onglet Détenus et ouvrir le modale
+        tabButtons.forEach(b=>b.classList.remove('active'));
+        tabContents.forEach(c=>c.classList.remove('active'));
+        document.querySelector('[data-tab="detenus"]').classList.add('active');
+        document.getElementById('detenus').classList.add('active');
+        openModal(p.detenuAssocie);
+      });
+      li.appendChild(span);
+    }
+
     const btn=document.createElement('button');
     btn.textContent='Supprimer';
     btn.className='supprimer';
@@ -407,6 +433,7 @@ function saveAndDisplayPlaques(){
 </script>
 </body>
 </html>
+
 
 
 
