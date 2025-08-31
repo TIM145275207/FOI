@@ -4,33 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FOI - FBI RP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
   background: url('SZCCG1i-Photoroom.png') no-repeat center center fixed;
   background-size: cover;
   color: #fff;
 }
 
 .container {
-  max-width: 800px;
-  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   padding: 30px;
-  background: rgba(15,15,15,0.8);
+  background: rgba(15,15,15,0.85);
   border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
 }
 
-h1 {
-  text-align: center;
+header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.7);
+  padding: 15px;
+  border-radius: 10px;
   margin-bottom: 20px;
-  color: #f1f1f1;
+  z-index: 10;
+}
+
+header img {
+  height: 60px;
+  margin-right: 15px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid #3b82f6;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2em;
+  color: #3b82f6;
   text-shadow: 0 0 10px #000;
 }
 
@@ -42,26 +62,27 @@ h1 {
 }
 
 .tab-button {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
   border: none;
-  padding: 10px 20px;
+  padding: 10px 25px;
   margin: 0 5px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
   color: #fff;
-  transition: 0.3s;
+  transition: all 0.3s;
 }
 
 .tab-button.active {
   background: #3b82f6;
+  color: #fff;
 }
 
 .tab-button:hover {
   background: #60a5fa;
 }
 
-/* Formulaires et listes */
+/* Formulaires */
 form {
   background: rgba(0,0,0,0.6);
   padding: 20px;
@@ -72,7 +93,7 @@ form {
 form input, form textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   border-radius: 8px;
   border: none;
   outline: none;
@@ -92,6 +113,7 @@ form input[type="submit"]:hover {
   background: #2563eb;
 }
 
+/* Recherche */
 #search, #searchPlaques {
   width: 100%;
   padding: 10px;
@@ -102,6 +124,7 @@ form input[type="submit"]:hover {
   font-size: 1em;
 }
 
+/* Listes */
 ul {
   list-style: none;
   padding: 0;
@@ -111,10 +134,16 @@ li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
   margin-bottom: 12px;
   padding: 12px;
   border-radius: 12px;
+  transition: all 0.2s;
+}
+
+li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px #3b82f6;
 }
 
 .detenu-info {
@@ -139,6 +168,7 @@ button.supprimer {
   padding: 6px 12px;
   cursor: pointer;
   color: #fff;
+  transition: 0.2s;
 }
 
 button.supprimer:hover {
@@ -149,11 +179,9 @@ button.supprimer:hover {
 #modal {
   display: none;
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.7);
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.8);
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -166,6 +194,12 @@ button.supprimer:hover {
   width:320px;
   text-align:center;
   position:relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(-20px);}
+  to {opacity:1; transform: translateY(0);}
 }
 
 #modal-content img {
@@ -179,8 +213,7 @@ button.supprimer:hover {
 
 #close {
   position:absolute;
-  top:10px;
-  right:15px;
+  top:10px; right:15px;
   cursor:pointer;
   font-size:22px;
   color:#ef4444;
@@ -198,14 +231,16 @@ button.supprimer:hover {
 <body>
 
 <div class="container">
-<h1>FOI - FBI RP</h1>
+<header>
+  <img src="SZCCG1i-Photoroom.png" alt="Logo FBI">
+  <h1>FOI - FBI RP</h1>
+</header>
 
 <div class="tabs">
   <button class="tab-button active" data-tab="detenus">Détenus</button>
   <button class="tab-button" data-tab="plaques">Plaques</button>
 </div>
 
-<!-- Détenus -->
 <div id="detenus" class="tab-content active">
 <form id="fbiForm">
   <input type="text" placeholder="Nom" required id="nom">
@@ -220,7 +255,6 @@ button.supprimer:hover {
 <ul id="liste"></ul>
 </div>
 
-<!-- Plaques -->
 <div id="plaques" class="tab-content">
 <form id="plaqueForm">
   <input type="text" placeholder="Numéro de plaque" required id="numero">
@@ -231,7 +265,6 @@ button.supprimer:hover {
 <ul id="listePlaques"></ul>
 </div>
 
-<!-- Modale -->
 <div id="modal">
   <div id="modal-content">
     <span id="close">&times;</span>
@@ -244,7 +277,22 @@ button.supprimer:hover {
 </div>
 
 <script>
+// Détenus et plaques
 const avatarParDefaut = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png';
+let personnes = JSON.parse(localStorage.getItem('personnes')||'[]');
+let plaques = JSON.parse(localStorage.getItem('plaques')||'[]');
+
+const liste = document.getElementById('liste');
+const listePlaques = document.getElementById('listePlaques');
+const search = document.getElementById('search');
+const searchPlaques = document.getElementById('searchPlaques');
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modal-img');
+const modalNom = document.getElementById('modal-nom');
+const modalAge = document.getElementById('modal-age');
+const modalCrime = document.getElementById('modal-crime');
+const modalAutres = document.getElementById('modal-autres');
+const closeBtn = document.getElementById('close');
 
 // Onglets
 const tabButtons = document.querySelectorAll('.tab-button');
@@ -258,175 +306,58 @@ tabButtons.forEach(button=>{
   });
 });
 
-// Détenus
-let personnes = [];
-const liste = document.getElementById('liste');
-const search = document.getElementById('search');
-const modal = document.getElementById('modal');
-const modalImg = document.getElementById('modal-img');
-const modalNom = document.getElementById('modal-nom');
-const modalAge = document.getElementById('modal-age');
-const modalCrime = document.getElementById('modal-crime');
-const modalAutres = document.getElementById('modal-autres');
-const closeBtn = document.getElementById('close');
-const form = document.getElementById('fbiForm');
-
-if(localStorage.getItem('personnes')){
-  personnes = JSON.parse(localStorage.getItem('personnes'));
-  displayList(personnes);
-}
-
-form.addEventListener('submit', e=>{
-  e.preventDefault();
-  const personne = {
-    nom: document.getElementById('nom').value.trim(),
-    prenom: document.getElementById('prenom').value.trim(),
-    age: document.getElementById('age').value,
-    crime: document.getElementById('crime').value.trim(),
-    autres: document.getElementById('autres').value.trim(),
-    photo: document.getElementById('photo').value.trim() || avatarParDefaut
-  };
-  personnes.push(personne);
-  personnes.sort((a,b)=>a.nom.localeCompare(b.nom));
-  saveAndDisplay();
-  form.reset();
-});
-
+// Fonctions Détenus
+function saveAndDisplay(){localStorage.setItem('personnes',JSON.stringify(personnes));displayList(personnes);}
 function displayList(list){
   liste.innerHTML='';
   list.forEach((p,index)=>{
     const li=document.createElement('li');
     const infoDiv=document.createElement('div');
     infoDiv.className='detenu-info';
-    const img=document.createElement('img');
-    img.src=p.photo || avatarParDefaut;
-    img.addEventListener('click',()=>openModal(p));
-    const text=document.createElement('span');
-    text.textContent=`${p.nom} ${p.prenom} - ${p.age} ans - Crime: ${p.crime}${p.autres?' - '+p.autres:''}`;
-    text.addEventListener('click',()=>openModal(p));
-    infoDiv.appendChild(img);
-    infoDiv.appendChild(text);
-    li.appendChild(infoDiv);
-    const btn=document.createElement('button');
-    btn.textContent='Supprimer';
-    btn.className='supprimer';
-    btn.addEventListener('click',()=>{
-      personnes.splice(index,1);
-      saveAndDisplay();
-    });
-    li.appendChild(btn);
-    liste.appendChild(li);
+    const img=document.createElement('img'); img.src=p.photo||avatarParDefaut; img.addEventListener('click',()=>openModal(p));
+    const text=document.createElement('span'); text.textContent=`${p.nom} ${p.prenom} - ${p.age} ans - Crime: ${p.crime}${p.autres?' - '+p.autres:''}`; text.addEventListener('click',()=>openModal(p));
+    infoDiv.appendChild(img); infoDiv.appendChild(text); li.appendChild(infoDiv);
+    const btn=document.createElement('button'); btn.textContent='Supprimer'; btn.className='supprimer'; btn.addEventListener('click',()=>{personnes.splice(index,1);saveAndDisplay();});
+    li.appendChild(btn); liste.appendChild(li);
   });
 }
 
-search.addEventListener('input', ()=>{
-  const value=search.value.toLowerCase();
-  const filtered=personnes.filter(p=>
-    p.nom.toLowerCase().includes(value)||
-    p.prenom.toLowerCase().includes(value)||
-    p.crime.toLowerCase().includes(value)
-  );
-  displayList(filtered);
-});
+// Fonctions Modale
+function openModal(p){modalImg.src=p.photo||avatarParDefaut; modalNom.textContent=`${p.nom} ${p.prenom}`; modalAge.textContent=`Âge : ${p.age} ans`; modalCrime.textContent=`Crime : ${p.crime}`; modalAutres.textContent=p.autres?`Infos : ${p.autres}`:''; modal.style.display='flex';}
+closeBtn.addEventListener('click',()=>modal.style.display='none'); window.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
+displayList(personnes);
 
-function saveAndDisplay(){
-  localStorage.setItem('personnes',JSON.stringify(personnes));
-  displayList(personnes);
-}
-
-// Modale
-function openModal(personne){
-  modalImg.src=personne.photo || avatarParDefaut;
-  modalNom.textContent=`${personne.nom} ${personne.prenom}`;
-  modalAge.textContent=`Âge : ${personne.age} ans`;
-  modalCrime.textContent=`Crime : ${personne.crime}`;
-  modalAutres.textContent=personne.autres?`Infos : ${personne.autres}`:'';
-  modal.style.display='flex';
-}
-
-closeBtn.addEventListener('click', ()=>modal.style.display='none');
-window.addEventListener('click', e=>{if(e.target===modal) modal.style.display='none';});
+// Recherche détenus
+search.addEventListener('input',()=>{const value=search.value.toLowerCase();displayList(personnes.filter(p=>p.nom.toLowerCase().includes(value)||p.prenom.toLowerCase().includes(value)||p.crime.toLowerCase().includes(value)));});
 
 // Plaques
-let plaques = [];
-const listePlaques = document.getElementById('listePlaques');
-const searchPlaques = document.getElementById('searchPlaques');
-const plaqueForm = document.getElementById('plaqueForm');
-
-if(localStorage.getItem('plaques')){
-  plaques = JSON.parse(localStorage.getItem('plaques'));
-  displayPlaques(plaques);
-}
-
-plaqueForm.addEventListener('submit', e=>{
-  e.preventDefault();
-  const numero = document.getElementById('numero').value.trim();
-  const proprietaire = document.getElementById('proprietaire').value.trim();
-
-  const plaque = { numero, proprietaire };
-
-  const detenu = personnes.find(p =>
-    (p.nom + ' ' + p.prenom).toLowerCase() === proprietaire.toLowerCase()
-  );
-  if(detenu){
-    plaque.detenuAssocie = detenu;
-  }
-
-  plaques.push(plaque);
-  plaques.sort((a,b)=>a.numero.localeCompare(b.numero));
-  saveAndDisplayPlaques();
-  plaqueForm.reset();
-});
-
+const plaqueForm=document.getElementById('plaqueForm');
+function saveAndDisplayPlaques(){localStorage.setItem('plaques',JSON.stringify(plaques));displayPlaques(plaques);}
 function displayPlaques(list){
   listePlaques.innerHTML='';
   list.forEach((p,index)=>{
-    const li = document.createElement('li');
-    li.textContent = `${p.numero} - ${p.proprietaire}`;
-    
-    if(p.detenuAssocie){
-      const span = document.createElement('span');
-      span.textContent = ' (Détenu enregistré)';
-      span.style.color = '#3b82f6';
-      span.style.cursor = 'pointer';
-      span.addEventListener('click', ()=>{
-        tabButtons.forEach(b=>b.classList.remove('active'));
-        tabContents.forEach(c=>c.classList.remove('active'));
-        document.querySelector('[data-tab="detenus"]').classList.add('active');
-        document.getElementById('detenus').classList.add('active');
-        openModal(p.detenuAssocie);
-      });
-      li.appendChild(span);
-    }
-
-    const btn=document.createElement('button');
-    btn.textContent='Supprimer';
-    btn.className='supprimer';
-    btn.addEventListener('click', ()=>{
-      plaques.splice(index,1);
-      saveAndDisplayPlaques();
-    });
-    li.appendChild(btn);
-    listePlaques.appendChild(li);
+    const li=document.createElement('li');
+    li.textContent=`${p.numero} - ${p.proprietaire}`;
+    const detenu = personnes.find(person=>`${person.nom} ${person.prenom}`.toLowerCase()===p.proprietaire.toLowerCase());
+    if(detenu){const span=document.createElement('span'); span.textContent=' (Détenu enregistré)'; span.style.color='#3b82f6'; span.style.cursor='pointer'; span.addEventListener('click',()=>{tabButtons.forEach(b=>b.classList.remove('active')); tabContents.forEach(c=>c.classList.remove('active')); document.querySelector('[data-tab="detenus"]').classList.add('active'); document.getElementById('detenus').classList.add('active'); openModal(detenu);}); li.appendChild(span);}
+    const btn=document.createElement('button'); btn.textContent='Supprimer'; btn.className='supprimer'; btn.addEventListener('click',()=>{plaques.splice(index,1);saveAndDisplayPlaques();});
+    li.appendChild(btn); listePlaques.appendChild(li);
   });
 }
+displayPlaques(plaques);
 
-searchPlaques.addEventListener('input', ()=>{
-  const value=searchPlaques.value.toLowerCase();
-  const filtered=plaques.filter(p=>
-    p.numero.toLowerCase().includes(value)||
-    p.proprietaire.toLowerCase().includes(value)
-  );
-  displayPlaques(filtered);
-});
+// Formulaires
+document.getElementById('fbiForm').addEventListener('submit',e=>{e.preventDefault();const p={nom:document.getElementById('nom').value.trim(),prenom:document.getElementById('prenom').value.trim(),age:document.getElementById('age').value,crime:document.getElementById('crime').value.trim(),autres:document.getElementById('autres').value.trim(),photo:document.getElementById('photo').value.trim()||avatarParDefaut};personnes.push(p);personnes.sort((a,b)=>a.nom.localeCompare(b.nom));saveAndDisplay();e.target.reset();});
 
-function saveAndDisplayPlaques(){
-  localStorage.setItem('plaques',JSON.stringify(plaques));
-  displayPlaques(plaques);
-}
+plaqueForm.addEventListener('submit',e=>{e.preventDefault();const p={numero:document.getElementById('numero').value.trim(),proprietaire:document.getElementById('proprietaire').value.trim()};plaques.push(p);plaques.sort((a,b)=>a.numero.localeCompare(b.numero));saveAndDisplayPlaques();e.target.reset();});
+
+// Recherche plaques
+searchPlaques.addEventListener('input',()=>{const value=searchPlaques.value.toLowerCase();displayPlaques(plaques.filter(p=>p.numero.toLowerCase().includes(value)||p.proprietaire.toLowerCase().includes(value)));});
 </script>
+
 </body>
 </html>
+
 
 
 
