@@ -107,6 +107,11 @@ li:hover {
   margin-right: 10px;
   object-fit: cover;
   border: 2px solid #66fcf1;
+  cursor: pointer;
+}
+
+.detenu-info span {
+  cursor: pointer;
 }
 
 button.supprimer {
@@ -120,6 +125,47 @@ button.supprimer {
 
 button.supprimer:hover {
   background: #ff1a1a;
+}
+
+/* Modale */
+#modal {
+  display: none;
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#modal-content {
+  background:#1f2833;
+  padding:20px;
+  border-radius:15px;
+  width:300px;
+  text-align:center;
+  position:relative;
+}
+
+#modal-content img {
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  margin-bottom:10px;
+  border:2px solid #66fcf1;
+  object-fit: cover;
+}
+
+#close {
+  position:absolute;
+  top:10px;
+  right:15px;
+  cursor:pointer;
+  font-size:20px;
+  color:#ff4d4d;
 }
 </style>
 </head>
@@ -141,6 +187,18 @@ button.supprimer:hover {
 
 <ul id="liste"></ul>
 
+<!-- Modale -->
+<div id="modal">
+  <div id="modal-content">
+    <span id="close">&times;</span>
+    <img id="modal-img" src="">
+    <h3 id="modal-nom"></h3>
+    <p id="modal-age"></p>
+    <p id="modal-crime"></p>
+    <p id="modal-autres"></p>
+  </div>
+</div>
+
 <script>
 let personnes = [];
 
@@ -153,6 +211,15 @@ if(localStorage.getItem('personnes')) {
 const form = document.getElementById('fbiForm');
 const liste = document.getElementById('liste');
 const search = document.getElementById('search');
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modal-img');
+const modalNom = document.getElementById('modal-nom');
+const modalAge = document.getElementById('modal-age');
+const modalCrime = document.getElementById('modal-crime');
+const modalAutres = document.getElementById('modal-autres');
+const closeBtn = document.getElementById('close');
+
+closeBtn.addEventListener('click', () => modal.style.display = 'none');
 
 form.addEventListener('submit', function(e) {
   e.preventDefault();
@@ -182,9 +249,11 @@ function displayList(list) {
 
     const img = document.createElement('img');
     img.src = p.photo;
+    img.addEventListener('click', () => openModal(p));
 
     const text = document.createElement('span');
     text.textContent = `${p.nom} ${p.prenom} - ${p.age} ans - Crime: ${p.crime}${p.autres ? ' - ' + p.autres : ''}`;
+    text.addEventListener('click', () => openModal(p));
 
     infoDiv.appendChild(img);
     infoDiv.appendChild(text);
@@ -213,13 +282,22 @@ search.addEventListener('input', function() {
   displayList(filtered);
 });
 
-// Sauvegarder dans localStorage et afficher
 function saveAndDisplay() {
   localStorage.setItem('personnes', JSON.stringify(personnes));
   displayList(personnes);
+}
+
+function openModal(personne) {
+  modalImg.src = personne.photo;
+  modalNom.textContent = `${personne.nom} ${personne.prenom}`;
+  modalAge.textContent = `Âge : ${personne.age} ans`;
+  modalCrime.textContent = `Crime : ${personne.crime}`;
+  modalAutres.textContent = personne.autres ? `Infos : ${personne.autres}` : '';
+  modal.style.display = 'flex';
 }
 </script>
 
 </body>
 </html>
+
 
