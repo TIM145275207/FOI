@@ -5,450 +5,215 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FOI - FBI RP</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
+/* === Styles généraux === */
 body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #0b0c10, #1f2833);
-    color: #c5c6c7;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    padding: 30px;
-    background-image: url("SZCCG1i-Photoroom.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 400px;
+  font-family: 'Roboto', sans-serif;
+  margin: 0; padding: 0;
+  background: url('SZCCG1i-Photoroom.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
 }
+.container {
+  max-width: 900px; margin: 0 auto;
+  padding: 30px;
+  background: rgba(15,15,15,0.85);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+/* Header */
+header {
+  position: sticky; top: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.7);
+  padding: 15px; border-radius: 10px; margin-bottom: 20px;
+}
+header img { height: 60px; margin-right: 15px; border-radius: 8px; border: 2px solid #3b82f6; cursor:pointer; }
+header h1 { margin:0; font-size:2em; color:#3b82f6; text-shadow:0 0 10px #000; }
+/* Onglets */
+.tabs { display:flex; justify-content:center; margin-bottom:20px; }
+.tab-button { background: rgba(255,255,255,0.1); border:none; padding:10px 25px; margin:0 5px; border-radius:10px; cursor:pointer; font-weight:bold; color:#fff; transition:0.3s; }
+.tab-button.active { background:#3b82f6; color:#fff; }
+.tab-button:hover { background:#60a5fa; }
+/* Formulaires */
+form { background: rgba(0,0,0,0.6); padding:20px; border-radius:15px; margin-bottom:20px; }
+form input, form textarea { width:100%; padding:10px; margin-bottom:12px; border-radius:8px; border:none; outline:none; font-size:1em; }
+form input[type="submit"] { background:#3b82f6; color:#fff; font-weight:bold; cursor:pointer; transition:0.3s; }
+form input[type="submit"]:hover { background:#2563eb; }
+/* Recherche */
+#search, #searchPlaques { width:100%; padding:10px; margin-bottom:15px; border-radius:8px; border:none; outline:none; font-size:1em; }
+/* Listes */
+ul { list-style:none; padding:0; }
+li { display:flex; align-items:center; justify-content:space-between; background: rgba(255,255,255,0.05); margin-bottom:12px; padding:12px; border-radius:12px; transition:all 0.2s; }
+li:hover { transform: translateY(-2px); box-shadow:0 0 15px #3b82f6; }
+.detenu-info { display:flex; align-items:center; cursor:pointer; }
+.detenu-info img { width:60px; height:60px; border-radius:50%; margin-right:15px; object-fit:cover; border:2px solid #3b82f6; }
+button.supprimer { background:#ef4444; border:none; border-radius:6px; padding:6px 12px; cursor:pointer; color:#fff; transition:0.2s; }
+button.supprimer:hover { background:#dc2626; }
+/* Modale */
+#modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000; }
+#modal-content { background:#111; padding:25px; border-radius:15px; width:320px; text-align:center; position:relative; animation:fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
+#modal-content img { width:120px; height:120px; border-radius:50%; margin-bottom:10px; object-fit:cover; border:3px solid #3b82f6; }
+#close { position:absolute; top:10px; right:15px; cursor:pointer; font-size:22px; color:#ef4444; }
+/* Contenus onglets */
+.tab-content { display:none; }
+.tab-content.active { display:block; }
 
-h1 {
-    color: #66fcf1;
-    font-size: 3em;
-    text-shadow: 0 0 10px #45a29e;
-    margin-bottom: 30px;
-}
-
-nav {
-    margin-bottom: 20px;
-}
-
-nav button {
-    background: #45a29e;
-    color: #0b0c10;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin: 0 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-nav button:hover {
-    background: #66fcf1;
-}
-
-section {
-    display: none;
-    width: 100%;
-    max-width: 700px;
-}
-
-section.active {
-    display: block;
-}
-
-form {
-    background: #1f2833;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px #45a29e;
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 12px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    font-size: 1em;
-}
-
-input[type="submit"] {
-    background: #45a29e;
-    color: #0b0c10;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background: #66fcf1;
-}
-
-#search {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    box-shadow: 0 0 10px #45a29e;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    background: #1f2833;
-    margin-bottom: 10px;
-    padding: 12px;
-    border-radius: 12px;
-    box-shadow: 0 0 12px #45a29e;
-    cursor: pointer;
-}
-
-li:hover {
-    background: #0b0c10;
-}
-
-/* Modal voir plus */
-.modal {
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(0,0,0,0.8);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index: 9998;
-}
-
-.modal-content {
-    background:#1f2833;
-    padding:20px;
-    border-radius:12px;
-    text-align:center;
-    position:relative;
-    color:white;
-    max-width:400px;
-}
-
-.modal-content img {
-    width:150px; height:150px;
-    object-fit:cover;
-    border-radius:50%;
-    margin-bottom:15px;
-}
-
-.close {
-    position:absolute;
-    top:10px;
-    right:15px;
-    font-size:20px;
-    color:red;
-    cursor:pointer;
-}
-
-/* Snake overlay */
-#snakeOverlay {
-    display:none;
-    position: fixed;
-    inset:0;
-    background: rgba(0,0,0,0.7);
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-}
-
-.snake-container {
-    background: #1f2833;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-}
-
-#canvasSnake {
-    display:block;
-    margin:0 auto 15px auto;
-    background:#0b0c10;
-    border:3px solid #66fcf1;
-    border-radius:10px;
-}
-
-.snake-controls button {
-    margin:5px;
-    padding:8px 15px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    background:#45a29e;
-    color:#0b0c10;
-    font-weight:bold;
-}
-
-.snake-controls button:hover {
-    background:#66fcf1;
-}
-
-/* Bouton secret */
-#secretSnake {
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:#45a29e;
-    color:#0b0c10;
-    border:none;
-    padding:10px 15px;
-    border-radius:50%;
-    cursor:pointer;
-    z-index:10000;
-}
-#secretSnake:hover {
-    background:#66fcf1;
-}
+/* === Snake Overlay === */
+#snake-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center; z-index:2000; flex-direction:column; }
+#snake-overlay canvas { border:3px solid #45a29e; border-radius:10px; background:#1f2833; }
+#close-snake { position:absolute; top:20px; right:30px; font-size:30px; color:#ef4444; cursor:pointer; }
 </style>
 </head>
 <body>
+<div class="container">
+<header>
+  <img src="SZCCG1i-Photoroom.png" alt="Logo FBI">
+  <h1>FOI - FBI RP</h1>
+</header>
 
-<h1>FOI - FBI RP</h1>
-
-<nav>
-    <button onclick="showSection('criminels')">Criminels</button>
-    <button onclick="showSection('plaques')">Plaques</button>
-</nav>
-
-<section id="criminels" class="active">
-    <form id="fbiForm">
-        <input type="text" placeholder="Nom" required id="nom">
-        <input type="text" placeholder="Prénom" required id="prenom">
-        <input type="number" placeholder="Âge" required id="age">
-        <input type="text" placeholder="Crime" required id="crime">
-        <input type="file" id="photo" accept="image/*">
-        <textarea placeholder="Autres infos" id="autres"></textarea>
-        <input type="submit" value="Ajouter">
-    </form>
-    <input type="text" id="search" placeholder="Rechercher...">
-    <ul id="liste"></ul>
-</section>
-
-<section id="plaques">
-    <form id="plaqueForm">
-        <input type="text" placeholder="Plaque d'immatriculation" required id="plaque">
-        <input type="text" placeholder="Propriétaire" required id="proprio">
-        <input type="submit" value="Ajouter">
-    </form>
-    <ul id="listePlaques"></ul>
-</section>
-
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <img id="modalImg" src="">
-        <h3 id="modalNom"></h3>
-        <p id="modalAge"></p>
-        <p id="modalCrime"></p>
-        <p id="modalAutres"></p>
-    </div>
+<div class="tabs">
+  <button class="tab-button active" data-tab="detenus">Détenus</button>
+  <button class="tab-button" data-tab="plaques">Plaques</button>
 </div>
 
-<!-- Bouton secret pour Snake -->
-<button id="secretSnake">🐍</button>
+<div id="detenus" class="tab-content active">
+<form id="fbiForm">
+  <input type="text" placeholder="Nom" required id="nom">
+  <input type="text" placeholder="Prénom" required id="prenom">
+  <input type="number" placeholder="Âge" required id="age">
+  <input type="text" placeholder="Crime" required id="crime">
+  <textarea placeholder="Autres infos" id="autres"></textarea>
+  <input type="text" placeholder="URL de la photo" id="photo">
+  <input type="submit" value="Ajouter">
+</form>
+<input type="text" id="search" placeholder="Rechercher...">
+<ul id="liste"></ul>
+</div>
 
-<div id="snakeOverlay">
-    <div class="snake-container">
-        <canvas id="canvasSnake" width="400" height="400"></canvas>
-        <div class="snake-controls">
-            <button id="pauseSnake">⏸ Pause</button>
-            <button id="restartSnake">🔄 Recommencer</button>
-            <button id="closeSnake">❌ Fermer</button>
-        </div>
-    </div>
+<div id="plaques" class="tab-content">
+<form id="plaqueForm">
+  <input type="text" placeholder="Numéro de plaque" required id="numero">
+  <input type="text" placeholder="Propriétaire" required id="proprietaire">
+  <input type="submit" value="Ajouter">
+</form>
+<input type="text" id="searchPlaques" placeholder="Rechercher...">
+<ul id="listePlaques"></ul>
+</div>
+
+<!-- Modale détenu -->
+<div id="modal">
+  <div id="modal-content">
+    <span id="close">&times;</span>
+    <img id="modal-img" src="">
+    <h3 id="modal-nom"></h3>
+    <p id="modal-age"></p>
+    <p id="modal-crime"></p>
+    <p id="modal-autres"></p>
+  </div>
+</div>
+
+<!-- Snake Overlay Easter Egg -->
+<div id="snake-overlay">
+  <span id="close-snake">&times;</span>
+  <canvas id="snake-game" width="400" height="400"></canvas>
 </div>
 
 <script>
-// Gestion des sections
-function showSection(id){
-    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-}
+// === Détenus et plaques ===
+const avatarParDefaut = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png';
+let personnes = JSON.parse(localStorage.getItem('personnes')||'[]');
+let plaques = JSON.parse(localStorage.getItem('plaques')||'[]');
+const liste = document.getElementById('liste');
+const listePlaques = document.getElementById('listePlaques');
+const search = document.getElementById('search');
+const searchPlaques = document.getElementById('searchPlaques');
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modal-img');
+const modalNom = document.getElementById('modal-nom');
+const modalAge = document.getElementById('modal-age');
+const modalCrime = document.getElementById('modal-crime');
+const modalAutres = document.getElementById('modal-autres');
+const closeBtn = document.getElementById('close');
 
-// Criminels
-let personnes=[];
-const form=document.getElementById('fbiForm');
-const liste=document.getElementById('liste');
-const search=document.getElementById('search');
-
-form.addEventListener('submit', e=>{
-    e.preventDefault();
-    const reader=new FileReader();
-    const file=document.getElementById('photo').files[0];
-    const personne={
-        nom: document.getElementById('nom').value.trim(),
-        prenom: document.getElementById('prenom').value.trim(),
-        age: document.getElementById('age').value,
-        crime: document.getElementById('crime').value.trim(),
-        autres: document.getElementById('autres').value.trim(),
-        photo: file ? URL.createObjectURL(file) : "https://via.placeholder.com/150"
-    };
-    personnes.push(personne);
-    personnes.sort((a,b)=>a.nom.localeCompare(b.nom));
-    displayList(personnes);
-    form.reset();
+// Onglets
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+tabButtons.forEach(button=>{
+  button.addEventListener('click', ()=>{
+    tabButtons.forEach(b=>b.classList.remove('active'));
+    tabContents.forEach(c=>c.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById(button.dataset.tab).classList.add('active');
+  });
 });
 
+// Fonctions Détenus
+function saveAndDisplay(){localStorage.setItem('personnes',JSON.stringify(personnes));displayList(personnes);}
 function displayList(list){
-    liste.innerHTML='';
-    list.forEach(p=>{
-        const li=document.createElement('li');
-        li.textContent=`${p.nom} ${p.prenom} - ${p.age} ans`;
-        li.onclick=()=>openModal(p);
-        liste.appendChild(li);
-    });
+  liste.innerHTML='';
+  list.forEach((p,index)=>{
+    const li=document.createElement('li');
+    const infoDiv=document.createElement('div');
+    infoDiv.className='detenu-info';
+    const img=document.createElement('img'); img.src=p.photo||avatarParDefaut; img.addEventListener('click',()=>openModal(p));
+    const text=document.createElement('span'); text.textContent=`${p.nom} ${p.prenom} - ${p.age} ans - Crime: ${p.crime}${p.autres?' - '+p.autres:''}`; text.addEventListener('click',()=>openModal(p));
+    infoDiv.appendChild(img); infoDiv.appendChild(text); li.appendChild(infoDiv);
+    const btn=document.createElement('button'); btn.textContent='Supprimer'; btn.className='supprimer'; btn.addEventListener('click',()=>{personnes.splice(index,1);saveAndDisplay();});
+    li.appendChild(btn); liste.appendChild(li);
+  });
 }
 
-search.addEventListener('input', ()=>{
-    const val=search.value.toLowerCase();
-    const filtered=personnes.filter(p=>
-        p.nom.toLowerCase().includes(val) ||
-        p.prenom.toLowerCase().includes(val) ||
-        p.crime.toLowerCase().includes(val)
-    );
-    displayList(filtered);
-});
+// Modale
+function openModal(p){modalImg.src=p.photo||avatarParDefaut; modalNom.textContent=`${p.nom} ${p.prenom}`; modalAge.textContent=`Âge : ${p.age} ans`; modalCrime.textContent=`Crime : ${p.crime}`; modalAutres.textContent=p.autres?`Infos : ${p.autres}`:''; modal.style.display='flex';}
+closeBtn.addEventListener('click',()=>modal.style.display='none'); window.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
+displayList(personnes);
 
-// Modal criminel
-const modal=document.getElementById("modal");
-const closeModal=document.getElementById("closeModal");
-const modalImg=document.getElementById("modalImg");
-const modalNom=document.getElementById("modalNom");
-const modalAge=document.getElementById("modalAge");
-const modalCrime=document.getElementById("modalCrime");
-const modalAutres=document.getElementById("modalAutres");
-
-function openModal(personne){
-    modalImg.src=personne.photo;
-    modalNom.textContent=`${personne.nom} ${personne.prenom}`;
-    modalAge.textContent=`Âge : ${personne.age} ans`;
-    modalCrime.textContent=`Crime : ${personne.crime}`;
-    modalAutres.textContent=personne.autres ? `Infos : ${personne.autres}` : '';
-    modal.style.display="flex";
-}
-
-closeModal.onclick=()=>modal.style.display="none";
+// Recherche détenus
+search.addEventListener('input',()=>{const value=search.value.toLowerCase();displayList(personnes.filter(p=>p.nom.toLowerCase().includes(value)||p.prenom.toLowerCase().includes(value)||p.crime.toLowerCase().includes(value)));});
 
 // Plaques
-let plaques=[];
-const plaqueForm=document.getElementById("plaqueForm");
-const listePlaques=document.getElementById("listePlaques");
-
-plaqueForm.addEventListener("submit", e=>{
-    e.preventDefault();
-    const plaque=document.getElementById("plaque").value.trim();
-    const proprio=document.getElementById("proprio").value.trim();
-    const proprietaire=personnes.find(p=>(p.nom+" "+p.prenom).toLowerCase()===proprio.toLowerCase());
-    plaques.push({plaque, proprio, lien:proprietaire||null});
-    displayPlaques();
-    plaqueForm.reset();
-});
-
-function displayPlaques(){
-    listePlaques.innerHTML='';
-    plaques.forEach(pl=>{
-        const li=document.createElement("li");
-        li.textContent=`${pl.plaque} - ${pl.proprio}`;
-        if(pl.lien){
-            li.style.color="#66fcf1";
-            li.onclick=()=>openModal(pl.lien);
-        }
-        listePlaques.appendChild(li);
-    });
+const plaqueForm=document.getElementById('plaqueForm');
+function saveAndDisplayPlaques(){localStorage.setItem('plaques',JSON.stringify(plaques));displayPlaques(plaques);}
+function displayPlaques(list){
+  listePlaques.innerHTML='';
+  list.forEach((p,index)=>{
+    const li=document.createElement('li');
+    li.textContent=`${p.numero} - ${p.proprietaire}`;
+    const detenu = personnes.find(person=>`${person.nom} ${person.prenom}`.toLowerCase()===p.proprietaire.toLowerCase());
+    if(detenu){const span=document.createElement('span'); span.textContent=' (Détenu enregistré)'; span.style.color='#3b82f6'; span.style.cursor='pointer'; span.addEventListener('click',()=>{tabButtons.forEach(b=>b.classList.remove('active')); tabContents.forEach(c=>c.classList.remove('active')); document.querySelector('[data-tab="detenus"]').classList.add('active'); document.getElementById('detenus').classList.add('active'); openModal(detenu);}); li.appendChild(span);}
+    const btn=document.createElement('button'); btn.textContent='Supprimer'; btn.className='supprimer'; btn.addEventListener('click',()=>{plaques.splice(index,1);saveAndDisplayPlaques();});
+    li.appendChild(btn); listePlaques.appendChild(li);
+  });
 }
+displayPlaques(plaques);
 
-// Snake
-const secretSnake=document.getElementById("secretSnake");
-const snakeOverlay=document.getElementById("snakeOverlay");
-const closeSnake=document.getElementById("closeSnake");
-const restartSnake=document.getElementById("restartSnake");
-const pauseSnake=document.getElementById("pauseSnake");
-const canvasSnake=document.getElementById("canvasSnake");
-const ctx=canvasSnake.getContext("2d");
+// Formulaires
+document.getElementById('fbiForm').addEventListener('submit',e=>{e.preventDefault();const p={nom:document.getElementById('nom').value.trim(),prenom:document.getElementById('prenom').value.trim(),age:document.getElementById('age').value,crime:document.getElementById('crime').value.trim(),autres:document.getElementById('autres').value.trim(),photo:document.getElementById('photo').value.trim()||avatarParDefaut};personnes.push(p);personnes.sort((a,b)=>a.nom.localeCompare(b.nom));saveAndDisplay();e.target.reset();});
 
-let snake=[], dx=20, dy=0, food, score=0, gameInterval, paused=false;
+plaqueForm.addEventListener('submit',e=>{e.preventDefault();const p={numero:document.getElementById('numero').value.trim(),proprietaire:document.getElementById('proprietaire').value.trim()};plaques.push(p);plaques.sort((a,b)=>a.numero.localeCompare(b.numero));saveAndDisplayPlaques();e.target.reset();});
 
-function placeFood(){ food={x:Math.floor(Math.random()*20)*20, y:Math.floor(Math.random()*20)*20}; }
+// Recherche plaques
+searchPlaques.addEventListener('input',()=>{const value=searchPlaques.value.toLowerCase();displayPlaques(plaques.filter(p=>p.numero.toLowerCase().includes(value)||p.proprietaire.toLowerCase().includes(value)));});
 
-function drawSnake(){
-    ctx.fillStyle="#0b0c10";
-    ctx.fillRect(0,0,canvasSnake.width,canvasSnake.height);
-    ctx.fillStyle="red";
-    ctx.fillRect(food.x,food.y,20,20);
-    snake.forEach((seg,i)=>{
-        ctx.fillStyle=i===0?"#3b82f6":"#45a29e";
-        ctx.fillRect(seg.x,seg.y,18,18);
-    });
-}
+// === Snake Easter Egg ===
+const logo = document.querySelector('header img');
+const snakeOverlay = document.getElementById('snake-overlay');
+const closeSnake = document.getElementById('close-snake');
+const canvasSnake = document.getElementById('snake-game');
+const ctxSnake = canvasSnake.getContext('2d');
 
-function updateSnake(){
-    const head={x:snake[0].x+dx, y:snake[0].y+dy};
-    if(head.x<0||head.x>=canvasSnake.width||head.y<0||head.y>=canvasSnake.height||snake.some(seg=>seg.x===head.x&&seg.y===head.y)){
-        alert("Game Over! Score: "+score);
-        clearInterval(gameInterval);
-        return;
-    }
-    snake.unshift(head);
-    if(head.x===food.x && head.y===food.y){
-        score++;
-        placeFood();
-    } else snake.pop();
-    drawSnake();
-    document.getElementById("snake-score").textContent="Score : "+score;
-}
+let clickCount = 0;
+let snake = [{x:200,y:200}], dx=20, dy=0, food={x:0,y:0}, score=0, gameInterval;
 
-function startSnake(){
-    snake=[{x:200,y:200}];
-    dx=20; dy=0;
-    score=0;
-    placeFood();
-    clearInterval(gameInterval);
-    gameInterval=setInterval(()=>{ if(!paused) updateSnake(); },100);
-}
-
-document.addEventListener("keydown", e=>{
-    switch(e.key){
-        case "ArrowUp": if(dy===0){dx=0;dy=-20;} break;
-        case "ArrowDown": if(dy===0){dx=0;dy=20;} break;
-        case "ArrowLeft": if(dx===0){dx=-20;dy=0;} break;
-        case "ArrowRight": if(dx===0){dx=20;dy=0;} break;
-    }
-});
-
-secretSnake.addEventListener("click", ()=>{
-    snakeOverlay.style.display="flex";
+logo.addEventListener('click', ()=>{
+  clickCount++;
+  if(clickCount>=5){
+    snakeOverlay.style.display='flex';
+    clickCount=0;
     startSnake();
+  }
 });
-
-closeSnake.addEventListener("click", ()=>{
-    snakeOverlay.style.display="none";
-    clearInterval(gameInterval);
-});
-
-restartSnake.addEventListener("click", ()=>startSnake());
-
-pauseSnake.addEventListener("click", ()=>{
-    paused=!paused;
-    pauseSnake.textContent=paused?"▶ Reprendre":"⏸ Pause";
-});
-</script>
-</body>
-</html>
-
-
 
 closeSnake.addEventListener('click', ()=>{
   snakeOverlay.style.display='none';
